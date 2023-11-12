@@ -1,14 +1,6 @@
-from io import open
-from analizador import *
+import archivo
 
-nroLinea = 1
-analizador = Analizador()
+fichero = "codigo.txt"
 
-# Por algún motivo sin el 'encoding' no lee el archivo.
-with open("codigo.txt", 'r', encoding="utf8") as archivo: 
-
-    for linea in archivo.readlines(): # Del archivo .txt, lee una line
-        
-        analizador.procesar_linea(nroLinea, linea)
-
-        nroLinea = nroLinea + 1
+proyecto = archivo.Archivo(fichero)
+proyecto.lectura()

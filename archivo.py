@@ -16,3 +16,8 @@ class Archivo:
                 self.analizador.procesar_linea(self.nroLinea, linea)
 
                 self.nroLinea = self.nroLinea + 1
+
+                print(self.analizador.codigo_procesado)
+            
+            if len(self.analizador.ambito) != 0:
+                print("Acá se podría lanzar un error por el tema de corchetes (alcance de funciones).")

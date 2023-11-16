@@ -1,4 +1,5 @@
 from errores import *
+from Variable import *
 
 from collections import deque
 
@@ -123,3 +124,52 @@ class Analizador:
             return valor
         except:
             return dato
+        
+#   =============================================================================================================
+    
+    def funcion_hash(self, id):
+        aux = 0
+        for i in id:
+            aux += ord(i)
+        return aux % 20
+
+
+    def insertar_en_diccionario(self, v):
+        key = self.funcion_hash(v.nombre)
+        self.codigo_procesado[key] = v
+
+
+    def mostrar_diccionario(self):
+        print("\nContenido del diccionario codigo_procesado:")
+        print("Key\t\tValor")
+        print("------------------------------")
+        for key, value in self.codigo_procesado.items():
+            print(f"{key}\t\t{value}") 
+
+
+    
+
+
+    def Search(self, valor):
+        hash_value = self.funcion_hash(valor)
+        
+        # Verificar si la clave hash está presente en el diccionario
+        if hash_value in self.codigo_procesado:
+            resultado_busqueda = self.codigo_procesado[hash_value]
+            print(f"\nElemento encontrado en la dirección de memoria: {hex(id(resultado_busqueda))}")
+        else:
+            print("\nElemento no encontrado.")
+
+                
+
+    def get_attributes(self, key):
+        hash_key = self.funcion_hash(key)
+        if hash_key in self.codigo_procesado:
+            return self.codigo_procesado[hash_key]
+        else:
+            return None
+
+    def remove(self, key):
+        hash_key = self.hash_func(key)
+        if hash_key in self.codigo_procesado:
+            del self.codigo_procesado[hash_key]           

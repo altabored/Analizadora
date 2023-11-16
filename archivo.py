@@ -21,3 +21,12 @@ class Archivo:
             
             if len(self.analizador.ambito) != 0:
                 print("Acá se podría lanzar un error por el tema de corchetes (alcance de funciones).")
+
+
+
+    def mostrar_diccionario(self):
+        self.analizador.mostrar_diccionario()
+
+
+    def Search(self, valor):
+        resultado_busqueda = self.analizador.Search(valor)

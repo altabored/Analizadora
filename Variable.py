@@ -4,7 +4,6 @@ class Variable:
         self.type = type
         self.nombre = nombre
         self.value = value
-        self.type = type
         self.scope = scope
         
     #---------------------------------------

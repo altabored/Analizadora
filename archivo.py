@@ -22,7 +22,8 @@ class Archivo:
             if len(self.analizador.ambito) != 0:
                 print("Acá se podría lanzar un error por el tema de corchetes (alcance de funciones).")
 
-
+    def imprimir_Errores(self):
+        self.analizador.imprimirErrores()
 
     def mostrar_diccionario(self):
         self.analizador.mostrar_diccionario()

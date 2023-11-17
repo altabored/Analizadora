@@ -114,7 +114,7 @@ class Analizador:
    
                             if valor == 0 or valor == "":                     
                                     self.codigo_procesado[self.tipos[i]].update({asignar : self.procesar_valor(self.tipos[i], palabra)})
-                                    self.validaciones.switch_case(self.tipos[i],asignar,self.procesar_valor(self.tipos[i]), palabra,self.nLinea)  
+                                    self.validaciones.switch_case(self.tipos[i],asignar,self.procesar_valor(self.tipos[i], palabra),self.nLinea)  
                             else:
                                 if not operacion:
                                        self.codigo_procesado[self.tipos[i]].update({asignar : valor})  
@@ -125,13 +125,13 @@ class Analizador:
                                             self.codigo_procesado[self.tipos[i]].update({asignar : valor + self.procesar_valor(self.tipos[i], palabra)})  
                                     except Exception as e:
                                         self.validaciones.SumaIncorrecta(valor,palabra,self.nLinea)
-                                        self.codigo_procesado[self.tipos[i]].update({asignar : valor + str(palabra)})  
+                                        self.codigo_procesado[self.tipos[i]].update({asignar : valor + palabra})  
                                     try: 
                                         if prev == '-':
                                             self.codigo_procesado[self.tipos[i]].update({asignar : valor - self.procesar_valor(self.tipos[i], palabra)})
                                     except Exception as e:
                                         self.validaciones.RestaIncorrecta(valor,palabra,self.nLinea)
-                                        self.codigo_procesado[self.tipos[i]].update({asignar : valor + "-"+ str(palabra)})  
+                                        self.codigo_procesado[self.tipos[i]].update({asignar : valor + "-"+ palabra})  
                 asignacion = False
 
             if palabra in self.operaciones:

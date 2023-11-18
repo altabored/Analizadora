@@ -1,4 +1,5 @@
 from io import open
+import os
 from analizador import *
 
 class Archivo:
@@ -21,6 +22,17 @@ class Archivo:
             
             if len(self.analizador.ambito) != 0:
                 print("Acá se podría lanzar un error por el tema de corchetes (alcance de funciones).")
+
+
+    def imprimirFuncion(self):
+        print("\n \u001b[32m-Codigo Analizado\u001b[37m")
+        dirname = os.path.dirname(__file__)
+        num = 0
+        with open(dirname+'\\'+ self.archivo, 'r', encoding="utf8") as file:
+            for line in file:
+                num +=1
+                print("{}:      {}".format(num, line), end="")
+        file.close()              
 
     def imprimir_Errores(self):
         self.analizador.imprimirErrores()

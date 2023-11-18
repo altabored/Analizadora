@@ -163,20 +163,6 @@ class Analizador:
 
 #   =============================================================================================================
 
-
-
-    def funcion_hash(self, id):
-        aux = 0
-        for i in id:
-            aux += ord(i)
-        return aux % 20
-
-
-    def insertar_en_diccionario(self, v):
-        key = self.funcion_hash(v.nombre)
-        self.codigo_procesado[key] = v
-
-
     def mostrar_diccionario(self):
         print("\nContenido del diccionario codigo_procesado:")
         print("Key\t\tValor")

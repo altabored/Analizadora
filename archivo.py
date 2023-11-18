@@ -30,4 +30,7 @@ class Archivo:
 
 
     def Search(self, valor):
-        resultado_busqueda = self.analizador.Search(valor)
+        self.analizador.Search(valor)
+
+    def remove(self, key):
+        self.analizador.remove(key) 

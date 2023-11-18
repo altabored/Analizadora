@@ -185,29 +185,18 @@ class Analizador:
             print(f"{key}\t\t{value}") 
 
 
-    
-
-
     def Search(self, valor):
-        hash_value = self.funcion_hash(valor)
-        
-        # Verificar si la clave hash está presente en el diccionario
-        if hash_value in self.codigo_procesado:
-            resultado_busqueda = self.codigo_procesado[hash_value]
-            print(f"\nElemento encontrado en la dirección de memoria: {hex(id(resultado_busqueda))}")
+        if valor in self.codigo_procesado:
+            resultado_busqueda = self.codigo_procesado[valor]
+            print(f"\nElemento encontrado para : '{valor}': {resultado_busqueda}")
         else:
-            print("\nElemento no encontrado.")
+            print("\nElemento no encontrado para : '{valor}'.")  
+ 
 
-                
-
-    def get_attributes(self, key):
-        hash_key = self.funcion_hash(key)
-        if hash_key in self.codigo_procesado:
-            return self.codigo_procesado[hash_key]
-        else:
-            return None
 
     def remove(self, key):
-        hash_key = self.hash_func(key)
-        if hash_key in self.codigo_procesado:
-            del self.codigo_procesado[hash_key]           
+        if key in self.codigo_procesado:
+            removed_value = self.codigo_procesado.pop(key)
+            return removed_value
+        else:
+            return None                 

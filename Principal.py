@@ -10,5 +10,7 @@ proyecto.imprimir_Errores()
 proyecto.mostrar_diccionario()
 
 
-valor = 'x' 
+valor = 'int' 
 proyecto.Search(valor)
+
+

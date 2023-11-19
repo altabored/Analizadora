@@ -6,7 +6,7 @@ class Validaciones():
 
 
     #Tipos
-    def verificar_String(self,asignacion,valor,numLinea):
+    def verificar_String(self,asignacion,valor,n
         if not isinstance(valor, str):
             self.errores.append(f"Error-Linea {numLinea}: El dato: {valor} esta asignado a '{asignacion}' corresponde a un string")
         

@@ -44,7 +44,11 @@ class Validaciones():
         self.errores.append(f"Error-Linea {numLinea}: No es posible restar el dato:'{valor1}' con el dato:'{valor2}'")
 
     def Retorno_void(self,numLinea): 
-        self.errores.append(f"Error-Linea {numLinea}: La funcion void no retorna ningun dato")           
+        self.errores.append(f"Error-Linea {numLinea}: La funcion void no retorna ningun dato")  
+
+    def verificar_Condicional(self,valor1,valor2,numLinea): 
+        if not isinstance(valor1, str) and not isinstance(valor2, str):
+            self.errores.append(f"Error-Linea {numLinea}: El dato: {valor1} no se puede comparar con el dato '{valor2}' corresponde a un string")          
 
 
     def imprimir_Errores(self):

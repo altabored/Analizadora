@@ -16,15 +16,15 @@ class Analizador:
 
         # Diccionario para almacenar las variables del "código fuente"
         self.codigo_procesado = {}
-
+        self.nlinea = 0
         # Lista para almacenar los valores de línea donde se realiza apertura de paréntesis.
         self.ambito = []
-        self.nLinea = 0
-        self.RetornoDeFuncion = False
         #funciones
         self.funciones = []
         #Validaciones
         self.validaciones = Validaciones()
+        self.RetornoDeFuncion = False
+
 #   =============================================================================================================
 
     def procesar_linea(self, numLinea, linea):
@@ -37,21 +37,20 @@ class Analizador:
     def definir_ambito(self, codigo):
         revision = codigo.split()
         if '{' in codigo:
-            if not revision[0] in self.condicionales:
                 self.funciones.append(revision[0])
         if '}' in codigo:
            if self.funciones and self.funciones[-1] == "void":
                 self.funciones.pop()
+           elif self.funciones[-1] in self.condicionales:
+                self.funciones.pop() 
            else:
-                if not self.RetornoDeFuncion == True:
-                   self.validaciones.errorRetorno(self.nLinea)
+                if not self.RetornoDeFuncion:
+                   self.validaciones.errorRetorno(self.nlinea)
                    self.funciones.pop() 
-                else:
-                    self.funciones.pop()
         for i in range(len(self.simbolos_abrir)):
             if self.simbolos_abrir[i] in codigo:
                 aux = codigo.replace(self.simbolos_abrir[i], " ")
-                self.ambito.append(self.nLinea)
+                self.ambito.append(self.nlinea)
                 codigo = aux
         for i in range(len(self.simbolos_cerrar)):
             if self.simbolos_cerrar[i] in codigo:
@@ -89,7 +88,7 @@ class Analizador:
                     tipo = prev
                 declaracion = False
 
-            if palabra in self.tipos:
+            if palabra in self.tipos or palabra in self.condicionales:
                 declaracion = True
                 if palabra not in self.codigo_procesado:
                     if palabra == self.tipos[0]:
@@ -107,34 +106,34 @@ class Analizador:
             if asignacion:
                 if tipo != "":
                     self.codigo_procesado[tipo].update({asignar : self.procesar_valor(tipo, palabra)})
-                    self.validaciones.switch_case(tipo,asignar,self.procesar_valor(tipo, palabra),self.nLinea)
+                    self.validaciones.switch_case(tipo,asignar,self.procesar_valor(tipo, palabra),self.nlinea)
                 else:
-                    for i in range(len(self.tipos)):
-                        if self.tipos[i] in self.codigo_procesado and asignar in self.codigo_procesado[self.tipos[i]]:
-                            valor = self.codigo_procesado[self.tipos[i]].get(asignar)
+                        for i in range(len(self.tipos)):
+                            if self.tipos[i] in self.codigo_procesado and asignar in self.codigo_procesado[self.tipos[i]]:
+                                valor = self.codigo_procesado[self.tipos[i]].get(asignar)
 
-                            if valor == 0 or valor == "":
-                                self.codigo_procesado[self.tipos[i]].update({asignar : self.procesar_valor(self.tipos[i], palabra)})
-                                self.validaciones.switch_case(self.tipos[i],asignar,self.procesar_valor(self.tipos[i], palabra),self.nLinea)  
-                            else:
-                                if not operacion:
-                                    self.codigo_procesado[self.tipos[i]].update({asignar : valor})  
-                                    self.validaciones.switch_case(self.tipos[i],asignar,valor,self.nLinea)   
+                                if valor == 0 or valor == "":
+                                    self.codigo_procesado[self.tipos[i]].update({asignar : self.procesar_valor(self.tipos[i], palabra)})
+                                    self.validaciones.switch_case(self.tipos[i],asignar,self.procesar_valor(self.tipos[i], palabra),self.nlinea)  
+                                elif prev == '>' or '<':
+                                    self.validaciones.verificar_Condicional(self.procesar_valor(self.tipos[i],asignar),self.procesar_valor(self.tipos[i],palabra),self.nlinea)
                                 else:
-                                    try:
-                                        if prev == '+':
-                                            self.codigo_procesado[self.tipos[i]].update({asignar : valor + self.procesar_valor(self.tipos[i], palabra)})  
-                                    except Exception as e:
-                                        self.validaciones.SumaIncorrecta(valor,palabra,self.nLinea)
-                                        self.codigo_procesado[self.tipos[i]].update({asignar : "Error"})  
-                                    try: 
-                                        if prev == '-':
-                                            self.codigo_procesado[self.tipos[i]].update({asignar : valor - self.procesar_valor(self.tipos[i], palabra)})
-                                    except Exception as e:
-                                            self.validaciones.RestaIncorrecta(valor,palabra,self.nLinea)
-                                            self.codigo_procesado[self.tipos[i]].update({asignar : "Error"}) 
-                                    if prev == '>' or '<':
-                                        self.validaciones.verificar_Condicional(asignar,palabra,self.nLinea)
+                                    if not operacion:
+                                        self.codigo_procesado[self.tipos[i]].update({asignar : valor})  
+                                        self.validaciones.switch_case(self.tipos[i],asignar,valor,self.nlinea)   
+                                    else:
+                                        try:
+                                            if prev == '+':
+                                                self.codigo_procesado[self.tipos[i]].update({asignar : valor + self.procesar_valor(self.tipos[i], palabra)})  
+                                        except Exception as e:
+                                            self.validaciones.SumaIncorrecta(valor,palabra,self.nlinea)
+                                            self.codigo_procesado[self.tipos[i]].update({asignar : "Error"})  
+                                        try: 
+                                            if prev == '-':
+                                                self.codigo_procesado[self.tipos[i]].update({asignar : valor - self.procesar_valor(self.tipos[i], palabra)})
+                                        except Exception as e:
+                                                self.validaciones.RestaIncorrecta(valor,palabra,self.nLinea)
+                                                self.codigo_procesado[self.tipos[i]].update({asignar : "Error"}) 
 
                 asignacion = False
 
@@ -145,19 +144,22 @@ class Analizador:
                 asignacion = True
                 asignar = prev
 
-            if palabra == "return":
-                funcion = self.funciones[-1]
-                if not funcion == 'void':
-                     self.validaciones.Retorno_void(self.nLinea)
-                else:   
-                     retorno = True
-
             if retorno:
                 funcion = self.funciones[-1]
-                self.validaciones.switch_ErrorFunciones(funcion,valor,self.nLinea)  
+                self.validaciones.switch_ErrorFunciones(funcion,self.procesar_valor(funcion,palabra),self.nlinea)  
                 self.RetornoDeFuncion = True
                 retorno = False
+    
+
+            if palabra == "return":
+                funcion = self.funciones[-1]
+                if funcion == 'void':
+                     self.validaciones.Retorno_void(self.nlinea)
+                     self.RetornoDeFuncion = True
+                else:   
+                     retorno = True
             prev = palabra
+           
 
            
 
@@ -180,3 +182,6 @@ class Analizador:
         self.validaciones.imprimir_Errores()
 
 #   ============================================================================================================= 
+
+    def errorAlcanceFuncion(self,numLinea):
+        self.validaciones.errorAlcance(numLinea)

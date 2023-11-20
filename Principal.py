@@ -5,5 +5,6 @@ fichero = "codigo.txt"
 
 proyecto = archivo.Archivo(fichero)
 proyecto.lectura()
-proyecto.imprimir_Errores()     
-
+proyecto.imprimirFuncion()
+proyecto.imprimir_Errores()
+proyecto.mostrar_diccionario()

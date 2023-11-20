@@ -4,5 +4,4 @@ void funcion(float v, string n){
         n = “Mayor”
         x = x + 5
     }
-    return 5
 }

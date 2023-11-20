@@ -9,25 +9,16 @@ class Archivo:
         self.analizador = Analizador()
 
     def lectura(self):
-        # Por algún motivo sin el 'encoding' no lee el archivo.
+        """ Este método se encarga de realizar la lectura del archivo .txt, procesandolo
+        línea por línea.""" 
         with open(self.archivo, 'r', encoding="utf8") as archivo: 
-
-            for linea in archivo.readlines(): # Del archivo .txt, lee una line
-                
-                self.analizador.procesar_linea(self.nroLinea, linea)
-
-                numLinea = self.nroLinea
-
-                self.nroLinea = self.nroLinea + 1
-
-                print(self.analizador.codigo_procesado)
-            
-            if len(self.analizador.ambito) != 0:
-                self.analizador.errorAlcanceFuncion(numLinea)
-
+            for linea in archivo.readlines(): # Del archivo .txt, lee una línea
+                self.analizador.procesar_linea(self.nroLinea, linea) # Se procesa la línea
+                self.nroLinea = self.nroLinea + 1 # Incrementa el contador de la línea
 
     def imprimirFuncion(self):
-        print("\n \u001b[32m-Codigo Analizado\u001b[37m")
+        """Método encargado de imprimir el código fuente en la terminal."""
+        print("\n \u001b[32m - Codigo Analizado - \u001b[37m")
         dirname = os.path.dirname(__file__)
         num = 0
         with open(dirname+'\\'+ self.archivo, 'r', encoding="utf8") as file:
@@ -37,11 +28,12 @@ class Archivo:
         file.close()              
 
     def imprimir_Errores(self):
+        """Método encargado de imprimr los errores presentes durante el procesado del código fuente."""
         self.analizador.imprimirErrores()
 
     def mostrar_diccionario(self):
-        self.analizador.mostrar_diccionario()
-
+        """Método encargado de imprimr el diccionario resultante del procesado del código fuente."""
+        print("\n\n \u001b[32m - Diccionario Procesado - \u001b[37m" + str(self.analizador.codigo_procesado) + "\n")
 
     def Search(self, valor):
         self.analizador.Search(valor)

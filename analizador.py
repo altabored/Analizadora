@@ -1,6 +1,4 @@
-from errores import *
 from validaciones import *
-from collections import deque
 
 class Analizador:
 
@@ -105,8 +103,8 @@ class Analizador:
 
             if asignacion:
                 if tipo != "":
-                    self.codigo_procesado[tipo].update({asignar : self.procesar_valor(tipo, palabra)})
-                    self.validaciones.switch_case(tipo,asignar,self.procesar_valor(tipo, palabra),self.nlinea)
+                     self.codigo_procesado[tipo].update({asignar : self.procesar_valor(tipo, palabra)})
+                     self.validaciones.switch_case(tipo,asignar,self.procesar_valor(tipo, palabra),self.nlinea)
                 else:
                         for i in range(len(self.tipos)):
                             if self.tipos[i] in self.codigo_procesado and asignar in self.codigo_procesado[self.tipos[i]]:
@@ -134,7 +132,6 @@ class Analizador:
                                         except Exception as e:
                                                 self.validaciones.RestaIncorrecta(valor,palabra,self.nLinea)
                                                 self.codigo_procesado[self.tipos[i]].update({asignar : "Error"}) 
-
                 asignacion = False
 
             if palabra in self.operaciones:

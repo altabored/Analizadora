@@ -1,5 +1,3 @@
-from errores import *
-
 class Validaciones():
     def __init__(self):
         self.errores = []
@@ -82,3 +80,8 @@ class Validaciones():
 
     def falsoRetorno(self,numLinea):
         self.errores.append(f"Error-Linea {numLinea}: Return inesperado") 
+
+
+    def datoNoDeclarado(self,valor, numLinea):
+        self.errores.append(f"Error-Linea {numLinea}: El dato: {valor}  no declarado") 
+        

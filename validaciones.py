@@ -79,3 +79,6 @@ class Validaciones():
 
     def errorAlcance(self,numLinea):
         self.errores.append(f"Error-Linea {numLinea}: Alcance de funcion")  
+
+    def falsoRetorno(self,numLinea):
+        self.errores.append(f"Error-Linea {numLinea}: Return inesperado") 

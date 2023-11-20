@@ -115,7 +115,7 @@ class Analizador:
                                 if valor == 0 or valor == "":
                                     self.codigo_procesado[self.tipos[i]].update({asignar : self.procesar_valor(self.tipos[i], palabra)})
                                     self.validaciones.switch_case(self.tipos[i],asignar,self.procesar_valor(self.tipos[i], palabra),self.nlinea)  
-                                elif prev == '>' or '<':
+                                elif prev == '>' or  prev =='<':
                                     self.validaciones.verificar_Condicional(self.procesar_valor(self.tipos[i],asignar),self.procesar_valor(self.tipos[i],palabra),self.nlinea)
                                 else:
                                     if not operacion:
@@ -152,12 +152,16 @@ class Analizador:
     
 
             if palabra == "return":
-                funcion = self.funciones[-1]
-                if funcion == 'void':
-                     self.validaciones.Retorno_void(self.nlinea)
-                     self.RetornoDeFuncion = True
-                else:   
-                     retorno = True
+                if len(self.funciones) == 0:
+                    self.validaciones.falsoRetorno(self.nlinea)
+                else: 
+                   funcion = self.funciones[-1]
+                   if funcion == 'void':
+                        self.validaciones.Retorno_void(self.nlinea)
+                        self.RetornoDeFuncion = True
+                   else:   
+                         retorno = True
+
             prev = palabra
            
 
